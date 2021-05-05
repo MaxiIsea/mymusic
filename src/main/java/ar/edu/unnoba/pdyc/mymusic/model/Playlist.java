@@ -16,6 +16,9 @@ public class Playlist {
     @ManyToOne(fetch=FetchType.LAZY)
     private User user;
 
+    @OneToMany(mappedBy = "playlist")
+    private List<PlaylistsSongs> playlistsSongs;
+/*
     @ManyToMany
     @JoinTable(
             name = "playlists_songs",
@@ -23,7 +26,7 @@ public class Playlist {
             inverseJoinColumns = @JoinColumn(name="song_id", nullable = false)
     )
     private List<Song> songs;
-
+*/
     public String getName() {
         return name;
     }
@@ -44,12 +47,15 @@ public class Playlist {
         this.user = user;
     }
 
-    public List<Song> getSongs() {
-        return songs;
+    public List<PlaylistsSongs> getPlaylistsSongs() {
+        return playlistsSongs;
     }
 
-    public void setSongs(List<Song> songs) {
-        this.songs = songs;
+    public void setPlaylistsSongs(List<PlaylistsSongs> playlistsSongs) {
+        this.playlistsSongs = playlistsSongs;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 }

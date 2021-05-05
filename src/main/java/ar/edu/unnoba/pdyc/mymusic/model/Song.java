@@ -17,9 +17,12 @@ public class Song {
     @Enumerated(value = EnumType.STRING)
     private Genre genre;
 
+    @OneToMany(mappedBy = "song")
+    private List<PlaylistsSongs> playlistsSongs;
+/*
     @ManyToMany(mappedBy = "songs")
     private List<Playlist> playlists;
-
+*/
     public Long getId() {
         return id;
     }
@@ -52,11 +55,11 @@ public class Song {
         this.genre = genre;
     }
 
-    public List<Playlist> getPlaylists() {
-        return playlists;
+    public List<PlaylistsSongs> getPlaylistsSongs() {
+        return playlistsSongs;
     }
 
-    public void setPlaylists(List<Playlist> playlists) {
-        this.playlists = playlists;
+    public void setPlaylistsSongs(List<PlaylistsSongs> playlistsSongs) {
+        this.playlistsSongs = playlistsSongs;
     }
 }
