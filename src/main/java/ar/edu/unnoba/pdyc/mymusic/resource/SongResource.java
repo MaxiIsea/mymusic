@@ -1,9 +1,7 @@
 package ar.edu.unnoba.pdyc.mymusic.resource;
 
 import ar.edu.unnoba.pdyc.mymusic.dto.SongDTO;
-import ar.edu.unnoba.pdyc.mymusic.model.DBGenre;
 import ar.edu.unnoba.pdyc.mymusic.model.Genre;
-import ar.edu.unnoba.pdyc.mymusic.model.Song;
 import ar.edu.unnoba.pdyc.mymusic.service.SongService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -34,7 +32,7 @@ public class SongResource {
 
         ModelMapper modelMapper = new ModelMapper();
         Type listType = new TypeToken<List<SongDTO>>(){}.getType();
-        List<SongDTO> list = modelMapper.map(songService.getSongsByAuthorGenre(author, songService.getGenreDBId(genre)),listType);
+        List<SongDTO> list = modelMapper.map(songService.getSongsByAuthorGenre(author,genre),listType);
         return Response.ok(list).build();
 
         //Falta aplicar los conceptos de DTO

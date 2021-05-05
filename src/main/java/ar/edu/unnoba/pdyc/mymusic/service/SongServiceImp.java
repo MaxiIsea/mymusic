@@ -1,6 +1,5 @@
 package ar.edu.unnoba.pdyc.mymusic.service;
 
-import ar.edu.unnoba.pdyc.mymusic.model.DBGenre;
 import ar.edu.unnoba.pdyc.mymusic.model.Genre;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
 import ar.edu.unnoba.pdyc.mymusic.repository.SongRepository;
@@ -20,9 +19,6 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
-    public List<Song> getSongsByAuthorGenre(String author, long genreid) {return songRepository.getSongsByAuthorGenre(author, genreid);}
-
-    @Override
-    public long getGenreDBId(Genre genre){ return songRepository.getGenreDBId(genre);}
+    public List<Song> getSongsByAuthorGenre(String author, Genre genre) {return songRepository.getSongsByAuthorGenre(author, genre);}
 
 }

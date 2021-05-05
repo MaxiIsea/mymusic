@@ -1,6 +1,5 @@
 package ar.edu.unnoba.pdyc.mymusic.dto;
 
-import ar.edu.unnoba.pdyc.mymusic.model.DBGenre;
 import ar.edu.unnoba.pdyc.mymusic.model.Genre;
 
 public class SongDTO {

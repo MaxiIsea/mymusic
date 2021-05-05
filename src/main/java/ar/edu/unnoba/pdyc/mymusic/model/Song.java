@@ -13,8 +13,8 @@ public class Song {
 
     private String author;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    private DBGenre dbgenre;
+    @Enumerated(value = EnumType.STRING)
+    private Genre genre;
 
     public Long getId() {
         return id;
@@ -40,11 +40,11 @@ public class Song {
         this.author = author;
     }
 
-    public DBGenre getDbgenre() {
-        return dbgenre;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setDbgenre(DBGenre dbgenre) {
-        this.dbgenre = dbgenre;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 }
