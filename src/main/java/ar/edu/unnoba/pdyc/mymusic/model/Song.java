@@ -1,6 +1,7 @@
 package ar.edu.unnoba.pdyc.mymusic.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "songs")
@@ -15,6 +16,9 @@ public class Song {
 
     @Enumerated(value = EnumType.STRING)
     private Genre genre;
+
+    @ManyToMany(mappedBy = "songs")
+    private List<Playlist> playlists;
 
     public Long getId() {
         return id;
@@ -46,5 +50,13 @@ public class Song {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public List<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(List<Playlist> playlists) {
+        this.playlists = playlists;
     }
 }
