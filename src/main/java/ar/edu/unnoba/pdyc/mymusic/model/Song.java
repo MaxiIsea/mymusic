@@ -13,6 +13,9 @@ public class Song {
 
     private String author;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    private DBGenre dbgenre;
+
     public Long getId() {
         return id;
     }
@@ -35,5 +38,13 @@ public class Song {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public DBGenre getDbgenre() {
+        return dbgenre;
+    }
+
+    public void setDbgenre(DBGenre dbgenre) {
+        this.dbgenre = dbgenre;
     }
 }

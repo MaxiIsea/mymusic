@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JerseyConfig extends ResourceConfig
 {
-    public JerseyConfig() 
+    public JerseyConfig()
     {
         register(SongResource.class);
     }
