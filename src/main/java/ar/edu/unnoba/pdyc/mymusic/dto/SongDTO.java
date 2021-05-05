@@ -6,7 +6,6 @@ import ar.edu.unnoba.pdyc.mymusic.model.Genre;
 public class SongDTO {
     private String name;
     private String author;
-    private DBGenre dbgenre;
     private Genre genre;
 
     public String getAuthor() {
@@ -31,13 +30,5 @@ public class SongDTO {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
-    }
-
-    public DBGenre getDbgenre() {
-        return dbgenre;
-    }
-
-    public void setDbgenre(DBGenre dbgenre) {
-        this.dbgenre = dbgenre;
     }
 }
