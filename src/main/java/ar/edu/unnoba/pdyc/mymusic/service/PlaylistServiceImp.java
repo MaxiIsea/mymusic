@@ -1,6 +1,7 @@
 package ar.edu.unnoba.pdyc.mymusic.service;
 
 import ar.edu.unnoba.pdyc.mymusic.model.Playlist;
+import ar.edu.unnoba.pdyc.mymusic.model.Song;
 import ar.edu.unnoba.pdyc.mymusic.repository.PlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,18 @@ public class PlaylistServiceImp implements PlaylistService{
     @Override
     public List<Playlist> getPlaylists() {
         return playlistRepository.findAll();
+    }
+
+    @Override
+    public void createPlaylist(Playlist playlist){ playlistRepository.save(playlist);}
+
+    @Override
+    public List<Song> getSongsByPlaylistId(long id) {
+        return playlistRepository.getSongsByPlaylistId(id);
+    }
+
+    @Override
+    public String getNameById(long id) {
+        return playlistRepository.getNameById(id);
     }
 }
