@@ -1,5 +1,6 @@
 package ar.edu.unnoba.pdyc.mymusic.resource;
 
+import ar.edu.unnoba.pdyc.mymusic.dto.PlaylistDTO;
 import ar.edu.unnoba.pdyc.mymusic.dto.SongDTO;
 import ar.edu.unnoba.pdyc.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc.mymusic.service.PlaylistService;
@@ -25,13 +26,11 @@ public class PlaylistResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylist(){
-        /*
+
         ModelMapper modelMapper = new ModelMapper();
-        Type listType = new TypeToken<List<Playlist>>(){}.getType();
-        List<Playlist> list = modelMapper.map(playlistService.getPlaylists(),listType);
-        return Response.ok(list).build();*/
-        System.out.println("holaaaaa");
-        List<Playlist> list = playlistService.getPlaylists();
+        Type listType = new TypeToken<List<PlaylistDTO>>(){}.getType();
+        List<PlaylistDTO> list = modelMapper.map(playlistService.getPlaylists(),listType);
         return Response.ok(list).build();
+
     }
 }

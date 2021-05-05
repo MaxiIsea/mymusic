@@ -30,8 +30,6 @@ public class SongResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSongsByAuthorGenre(@QueryParam("author") String author, @QueryParam("genre") Genre genre){
 
-
-        System.out.println("hola");
         ModelMapper modelMapper = new ModelMapper();
         Type listType = new TypeToken<List<SongDTO>>(){}.getType();
         List<SongDTO> list = modelMapper.map(songService.getSongsByAuthorGenre(author,genre),listType);
@@ -42,4 +40,15 @@ public class SongResource {
         return Response.ok(songs).build();*/
 
     }
+
+    /* canciones sin filtro
+    @GET
+    @Path("/songs")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSongs(){
+        ModelMapper modelMapper = new ModelMapper();
+        Type listType = new TypeToken<List<SongDTO>>(){}.getType();
+        List<SongDTO> list = modelMapper.map(songService.getSongs(),listType);
+        return Response.ok(list).build();
+    }*/
 }
