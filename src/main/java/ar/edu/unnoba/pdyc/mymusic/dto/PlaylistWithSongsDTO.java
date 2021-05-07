@@ -7,18 +7,22 @@ import java.util.List;
 public class PlaylistWithSongsDTO {
 
     private String playlistName;
-    private List<Song> songs;
+    private List<SongDTO> songs;
 
-    public List<Song> getSongs() {
+    public PlaylistWithSongsDTO() {
+
+    }
+
+    public List<SongDTO> getSongs() {
         return songs;
     }
 
-    public PlaylistWithSongsDTO(String playlistName, List<Song> songs) {
+    public PlaylistWithSongsDTO(String playlistName, List<SongDTO> songs) {
         this.playlistName = playlistName;
         this.songs = songs;
     }
 
-    public void setSongs(List<Song> songs) {
+    public void setSongs(List<SongDTO> songs) {
         this.songs = songs;
     }
 

@@ -41,12 +41,13 @@ public class PlaylistResource {
     public Response getPlaylistById(@PathParam("id") long id){
 
         ModelMapper modelMapper = new ModelMapper();
-        Type listType = new TypeToken<String>(){}.getType();
-        String list = modelMapper.map(playlistService.getNameById(id),listType);
-        Type listType2 = new TypeToken<List<SongDTO>>(){}.getType();
-        List<PlaylistDTO> list2 = modelMapper.map(playlistService.getSongsByPlaylistId(id),listType);
-        //no anda
-        return Response.ok(list2,list).build();
+        PlaylistWithSongsDTO playlistWithSongsDTO = new PlaylistWithSongsDTO(); //creo el DTO a retornar
+        playlistWithSongsDTO.setPlaylistName(playlistService.getNameById(id));  // le seteo el nombre de la playlist
+        Type listSongDTOType = new TypeToken<List<SongDTO>>(){}.getType(); //armo el tipo lista de songsDTO (sin el id)
+        List<SongDTO> listSongsDTO = modelMapper.map(playlistService.getSongsByPlaylistId(id),listSongDTOType); // creo la lista de songsdto
+        //el .map(objeto a convertir el cual sirve de fuente de datos, el tipo al que quiero que lo convierta)
+        playlistWithSongsDTO.setSongs(listSongsDTO);
+        return Response.ok(playlistWithSongsDTO).build();
     }
 /*
     @POST
