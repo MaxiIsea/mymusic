@@ -16,7 +16,7 @@ public class Playlist {
     @ManyToOne(fetch=FetchType.LAZY)
     private User user;
 
-    @OneToMany(mappedBy = "playlist")
+    @OneToMany(mappedBy = "playlist") //cascade = CascadeType.REMOVE, orphanRemoval = true
     private List<PlaylistsSongs> playlistsSongs;
 /*
     @ManyToMany

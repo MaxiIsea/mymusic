@@ -3,6 +3,7 @@ package ar.edu.unnoba.pdyc.mymusic.service;
 import ar.edu.unnoba.pdyc.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
 import ar.edu.unnoba.pdyc.mymusic.repository.PlaylistRepository;
+import ar.edu.unnoba.pdyc.mymusic.repository.PlaylistsSongsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ public class PlaylistServiceImp implements PlaylistService{
 
     @Autowired
     private PlaylistRepository playlistRepository;
+
+    @Autowired
+    private PlaylistsSongsRepository playlistsSongsRepository;
 
     @Override
     public List<Playlist> getPlaylists() {
@@ -35,5 +39,14 @@ public class PlaylistServiceImp implements PlaylistService{
     @Override
     public long getOwner(long id){
         return playlistRepository.getOwner(id);
+    }
+
+    @Override
+    public void deletePlaylist(long id){
+        List<Long> pkABorrar = playlistsSongsRepository.getIdByPlaylistId(id);
+        for (Long aLong : pkABorrar) {
+            playlistsSongsRepository.deleteById(aLong);
+        }
+        playlistRepository.deleteById(id);
     }
 }

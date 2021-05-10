@@ -11,4 +11,5 @@ public interface PlaylistService {
     public List<Song> getSongsByPlaylistId(long id);
     public String getNameById(long id);
     public long getOwner(long id);
+    public void deletePlaylist (long id);
 }
