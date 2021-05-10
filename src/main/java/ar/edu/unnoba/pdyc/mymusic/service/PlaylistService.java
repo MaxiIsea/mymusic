@@ -10,4 +10,5 @@ public interface PlaylistService {
     public void createPlaylist(Playlist playlist);
     public List<Song> getSongsByPlaylistId(long id);
     public String getNameById(long id);
+    public long getOwner(long id);
 }

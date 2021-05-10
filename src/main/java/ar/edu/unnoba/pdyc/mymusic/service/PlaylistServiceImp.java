@@ -31,4 +31,9 @@ public class PlaylistServiceImp implements PlaylistService{
     public String getNameById(long id) {
         return playlistRepository.getNameById(id);
     }
+
+    @Override
+    public long getOwner(long id){
+        return playlistRepository.getOwner(id);
+    }
 }
