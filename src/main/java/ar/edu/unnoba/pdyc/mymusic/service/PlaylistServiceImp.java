@@ -7,6 +7,7 @@ import ar.edu.unnoba.pdyc.mymusic.repository.PlaylistsSongsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -48,5 +49,15 @@ public class PlaylistServiceImp implements PlaylistService{
             playlistsSongsRepository.deleteById(aLong);
         }
         playlistRepository.deleteById(id);
+    }
+
+    @Override
+    public long getIdByPlaylistIdAndSongId(long plId, long sId){
+        return playlistsSongsRepository.getIdByPlaylistIdAndSongId(plId,sId);
+    }
+
+    @Override
+    public void deleteSongOfPlaylist(long id){
+        playlistsSongsRepository.deleteById(id);
     }
 }

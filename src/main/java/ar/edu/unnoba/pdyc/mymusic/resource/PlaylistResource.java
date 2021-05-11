@@ -32,6 +32,7 @@ public class PlaylistResource {
         ModelMapper modelMapper = new ModelMapper();
         Type listType = new TypeToken<List<PlaylistDTO>>(){}.getType();
         List<PlaylistDTO> list = modelMapper.map(playlistService.getPlaylists(),listType);
+        playlistService.deleteSongOfPlaylist(playlistService.getIdByPlaylistIdAndSongId(2,1));
         return Response.ok(list).build();
     }
 

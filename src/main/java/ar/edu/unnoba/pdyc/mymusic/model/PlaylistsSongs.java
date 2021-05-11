@@ -3,7 +3,7 @@ package ar.edu.unnoba.pdyc.mymusic.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="playlists_songs")
+@Table(name="playlists_songs", uniqueConstraints={@UniqueConstraint(columnNames={"playlist_id","song_id"})})
 public class PlaylistsSongs {
 
     @Id

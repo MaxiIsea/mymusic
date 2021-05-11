@@ -11,4 +11,8 @@ public interface PlaylistsSongsRepository extends JpaRepository<PlaylistsSongs,L
 
     @Query("select pl.id from PlaylistsSongs pl where pl.playlist.id=:plId")
     List<Long> getIdByPlaylistId(@Param("plId") long id);
+
+    @Query("select pl.id from PlaylistsSongs pl where pl.playlist.id=:plId and pl.song.id=:sId")
+    public long getIdByPlaylistIdAndSongId (@Param("plId") long plId, @Param("sId") long sId);
+
 }
