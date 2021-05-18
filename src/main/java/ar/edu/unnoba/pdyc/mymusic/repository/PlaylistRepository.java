@@ -12,8 +12,7 @@ import java.util.List;
 
 @Repository("playlistRepository")
 public interface PlaylistRepository extends JpaRepository<Playlist,Long>{
-
-
+    
     @Query("select s from Playlist p inner join PlaylistsSongs pl on (p.id=pl.playlist.id) inner join Song s on (s.id=pl.song.id) where p.id=:id")
     public List<Song> getSongsByPlaylistId (@Param("id") long id);
 
