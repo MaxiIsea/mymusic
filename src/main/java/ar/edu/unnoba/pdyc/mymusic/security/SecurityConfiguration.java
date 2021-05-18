@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.naming.AuthenticationException;
 import javax.ws.rs.HttpMethod;
 
 @EnableWebSecurity
@@ -26,8 +25,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // determino que recursos seran publicos y cuales seran privados(con proteccion via filtros)
     @Override
     protected void configure (HttpSecurity http) throws Exception{
-        http.authorizeRequests()
+        http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/songs").permitAll()      //publico
+                .antMatchers(HttpMethod.POST, "/login").permitAll()      //publico
                 .anyRequest().authenticated()   //cualquier otra peticion requiere auntenticacion
                 .and()
                 // filtros que debera cumplir una peticion para tener acceso al servicio

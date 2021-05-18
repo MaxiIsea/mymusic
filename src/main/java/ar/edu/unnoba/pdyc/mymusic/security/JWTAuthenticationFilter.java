@@ -3,10 +3,11 @@ package ar.edu.unnoba.pdyc.mymusic.security;
 import ar.edu.unnoba.pdyc.mymusic.dto.AuthenticationRequestDTO;
 import ar.edu.unnoba.pdyc.mymusic.model.User;
 import com.auth0.jwt.JWT;
-import org.modelmapper.ModelMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.core.AuthenticationException;
 
@@ -29,16 +30,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager){
         this.authenticationManager = authenticationManager;
+        setFilterProcessesUrl("/login");    // en que ruta interviene este filtro
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            ModelMapper modelMapper = new ModelMapper();
-            // request.getInputSteam() te da el body de la peticion
-            AuthenticationRequestDTO auth = modelMapper.map(request.getInputStream(), AuthenticationRequestDTO.class);
+            AuthenticationRequestDTO auth = new ObjectMapper()
+                .readValue(request.getInputStream(),AuthenticationRequestDTO.class);
 
-            //System.our.println(new BCryptPasswordEncoder.encode(auth.getPassword()));
+            System.out.println(new BCryptPasswordEncoder().encode(auth.getPassword()));
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
