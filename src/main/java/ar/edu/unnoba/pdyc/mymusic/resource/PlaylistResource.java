@@ -2,6 +2,7 @@ package ar.edu.unnoba.pdyc.mymusic.resource;
 
 import ar.edu.unnoba.pdyc.mymusic.dto.PlaylistDTO;
 import ar.edu.unnoba.pdyc.mymusic.dto.PlaylistWithSongsDTO;
+import ar.edu.unnoba.pdyc.mymusic.dto.PlaylistsSongsDTO;
 import ar.edu.unnoba.pdyc.mymusic.dto.SongDTO;
 import ar.edu.unnoba.pdyc.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
@@ -11,6 +12,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
@@ -22,10 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
-GET http://localhost:8080/mymusic/playlists         lista de playlists (sin canciones)
-POST http://localhost:8080/mymusic/playlists        nueva playlist
-PUT http://localhost:8080/mymusic/playlists/:id     actualizo la playlist = id
-DELETE http://localhost:8080/mymusic/playlists/:id      borra la playlist = id
+GET http://localhost:8080/mymusic/playlists                   lista de playlists (sin canciones)
+POST http://localhost:8080/mymusic/playlists                  nueva playlist
+PUT http://localhost:8080/mymusic/playlists/:id               actualizo la playlist = id
+DELETE http://localhost:8080/mymusic/playlists/:id            borra la playlist = id
+POST http://localhost:8080/mymusic/playlists/:id/songs        insertar una cancion en una playlist
+DELETE http://localhost:8080/mymusic/playlists/:id/songs/:id            borra una cancion de un playlist
+DELETE http://localhost:8080/mymusic/playlists/:id            borra una playlist
  */
 
 @Path("/playlists")
@@ -83,7 +88,45 @@ public class PlaylistResource {
         }
     }
 
-    //borrar
-    //playlistService.deleteSongOfPlaylist(playlistService.getIdByPlaylistIdAndSongId(2,1));
+    @POST
+    @Path("/{id}/songs")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addSongInPlaylist(@PathParam("id") long idPlaylist, PlaylistsSongsDTO playlistsSongsDTO){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = (String) auth.getPrincipal();
+        Long idSong = Long.valueOf(playlistsSongsDTO.getId());
+        try {
+            playlistService.addSong(idPlaylist,idSong,loggedEmail);
+            return Response.status(Response.Status.CREATED).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{idPlaylist}/songs/{idSong}")
+    public Response deleteSongInPlaylist(@PathParam("idPlaylist") long idPlaylist,@PathParam("idSong") long idSong){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = (String) auth.getPrincipal();
+        try{
+            playlistService.deleteSong(idPlaylist,idSong,loggedEmail);
+            return Response.ok().build();
+        } catch (Exception e){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{idPlaylist}")
+    public Response delete(@PathParam("idPlaylist") long idPlaylist){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = (String) auth.getPrincipal();
+        try{
+            playlistService.delete(idPlaylist,loggedEmail);
+            return Response.ok().build();
+        } catch (Exception e){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
 
 }
