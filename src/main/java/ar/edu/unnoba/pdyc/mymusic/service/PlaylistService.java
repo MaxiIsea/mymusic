@@ -15,4 +15,5 @@ public interface PlaylistService {
     public long getIdByPlaylistIdAndSongId(long plId, long sId);
     public void deleteSongOfPlaylist(long id);
     public void create(PlaylistDTO playlistDTO, String loggedEmail);
+    public void update(long id, PlaylistDTO playlistDTO,String loggedEmail) throws Exception;
 }

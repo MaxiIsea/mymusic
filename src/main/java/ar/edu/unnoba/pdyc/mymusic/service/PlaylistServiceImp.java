@@ -41,6 +41,19 @@ public class PlaylistServiceImp implements PlaylistService{
     }
 
     @Override
+    public void update(long id, PlaylistDTO playlistDTO, String loggedEmail) throws Exception {
+        User userLogged = userRepository.findByEmail(loggedEmail);
+        Playlist playlistBD = playlistRepository.findById(id).get();
+        User ownerPlaylist = userRepository.findById(playlistBD.getUser().getId()).get();
+        if(ownerPlaylist.equals(userLogged)){
+            playlistBD.setName(playlistDTO.getName());
+            playlistRepository.save(playlistBD);
+        } else{
+            throw new Exception("no podes modificar una playlist de la que no sos el dueño");
+        }
+    }
+
+    @Override
     public List<Song> getSongsByPlaylistId(long id) {
         return playlistRepository.getSongsByPlaylistId(id);
     }

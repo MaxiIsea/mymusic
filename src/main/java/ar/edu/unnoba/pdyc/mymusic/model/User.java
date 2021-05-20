@@ -45,6 +45,10 @@ public class User implements UserDetails {
         return this.email;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     // roles que tienen los usuarios
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){

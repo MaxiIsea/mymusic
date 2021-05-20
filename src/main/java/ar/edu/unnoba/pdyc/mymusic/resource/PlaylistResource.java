@@ -44,7 +44,6 @@ public class PlaylistResource {
         return Response.ok(list).build();
     }
 
-
     //info de una playlist (incluye todas sus canciones)
     @GET
     @Path("/{id}")
@@ -68,6 +67,20 @@ public class PlaylistResource {
         String loggedEmail = (String) auth.getPrincipal();   //email del usuario loggeado
         playlistService.create(playlistDTO,loggedEmail);
         return Response.status(Response.Status.CREATED).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updatePlaylist (@PathParam("id")long id,PlaylistDTO playlistDTO){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = (String) auth.getPrincipal();
+        try{
+        playlistService.update(id,playlistDTO,loggedEmail);
+        return Response.ok().build();
+        } catch (Exception e){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     //borrar

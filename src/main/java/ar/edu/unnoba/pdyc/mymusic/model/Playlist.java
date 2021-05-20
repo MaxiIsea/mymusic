@@ -1,5 +1,7 @@
 package ar.edu.unnoba.pdyc.mymusic.model;
 
+import org.springframework.security.core.parameters.P;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,24 +11,16 @@ public class Playlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     private User user;
 
     @OneToMany(mappedBy = "playlist") //cascade = CascadeType.REMOVE, orphanRemoval = true
     private List<PlaylistsSongs> playlistsSongs;
-/*
-    @ManyToMany
-    @JoinTable(
-            name = "playlists_songs",
-            joinColumns = @JoinColumn(name = "playlist_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name="song_id", nullable = false)
-    )
-    private List<Song> songs;
-*/
+
     public String getName() {
         return name;
     }
@@ -35,7 +29,7 @@ public class Playlist {
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -55,7 +49,20 @@ public class Playlist {
         this.playlistsSongs = playlistsSongs;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        } else if (!(obj instanceof Playlist)){ //sino no es un user
+            return false;
+        } else if (((Playlist) obj).id.equals(this.id)){    //mismos id en BD -> mismo objeto
+            return true;
+        } else {
+            return false;
+        }
     }
 }
