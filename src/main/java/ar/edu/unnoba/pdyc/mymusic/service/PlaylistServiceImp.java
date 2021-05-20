@@ -1,10 +1,14 @@
 package ar.edu.unnoba.pdyc.mymusic.service;
 
+import ar.edu.unnoba.pdyc.mymusic.dto.PlaylistDTO;
 import ar.edu.unnoba.pdyc.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
+import ar.edu.unnoba.pdyc.mymusic.model.User;
 import ar.edu.unnoba.pdyc.mymusic.repository.PlaylistRepository;
 import ar.edu.unnoba.pdyc.mymusic.repository.PlaylistsSongsRepository;
+import ar.edu.unnoba.pdyc.mymusic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -12,6 +16,9 @@ import java.util.List;
 
 @Service
 public class PlaylistServiceImp implements PlaylistService{
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PlaylistRepository playlistRepository;
@@ -25,7 +32,13 @@ public class PlaylistServiceImp implements PlaylistService{
     }
 
     @Override
-    public void createPlaylist(Playlist playlist){ playlistRepository.save(playlist);}
+    public void create(PlaylistDTO playlistDTO, String loggedEmail){
+        User userLogged = userRepository.findByEmail(loggedEmail);
+        Playlist playlist = new Playlist();
+        playlist.setName(playlistDTO.getName());
+        playlist.setUser(userLogged);
+        playlistRepository.save(playlist);
+    }
 
     @Override
     public List<Song> getSongsByPlaylistId(long id) {

@@ -42,15 +42,16 @@ public class SongResource {
         return Response.ok(list).build();
     }
 
+
     //crear una nueva cancion
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createSong(SongDTO songDTO){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication(); //contexto de seguridad de spring
-        String ownerEmail = (String) auth.getPrincipal();   //email del usuario loggeado
+        String loggedEmail = (String) auth.getPrincipal();   //email del usuario loggeado
         ModelMapper modelMapper = new ModelMapper();
         Song song = modelMapper.map(songDTO,Song.class);    //mapeo a song los datos recibidos en body de la request
-        songService.create(song,ownerEmail);
+        songService.create(song,loggedEmail);
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -85,14 +86,4 @@ public class SongResource {
         }
     }
 
-    /* canciones sin filtro
-    @GET
-    @Path("/songs")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getSongs(){
-        ModelMapper modelMapper = new ModelMapper();
-        Type listType = new TypeToken<List<SongDTO>>(){}.getType();
-        List<SongDTO> list = modelMapper.map(songService.getSongs(),listType);
-        return Response.ok(list).build();
-    }*/
 }

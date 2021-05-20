@@ -9,6 +9,8 @@ import ar.edu.unnoba.pdyc.mymusic.service.PlaylistService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
@@ -19,28 +21,35 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+GET http://localhost:8080/mymusic/playlists         lista de playlists (sin canciones)
+POST http://localhost:8080/mymusic/playlists        nueva playlist
+PUT http://localhost:8080/mymusic/playlists/:id     actualizo la playlist = id
+DELETE http://localhost:8080/mymusic/playlists/:id      borra la playlist = id
+ */
+
 @Path("/playlists")
 public class PlaylistResource {
 
     @Autowired
     private PlaylistService playlistService;
 
+    // obtener todas las playlists (sin canciones)
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylist(){
-
         ModelMapper modelMapper = new ModelMapper();
         Type listType = new TypeToken<List<PlaylistDTO>>(){}.getType();
         List<PlaylistDTO> list = modelMapper.map(playlistService.getPlaylists(),listType);
-        playlistService.deleteSongOfPlaylist(playlistService.getIdByPlaylistIdAndSongId(2,1));
         return Response.ok(list).build();
     }
 
+
+    //info de una playlist (incluye todas sus canciones)
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylistById(@PathParam("id") long id){
-
         ModelMapper modelMapper = new ModelMapper();
         PlaylistWithSongsDTO playlistWithSongsDTO = new PlaylistWithSongsDTO(); //creo el DTO a retornar
         playlistWithSongsDTO.setPlaylistName(playlistService.getNameById(id));  // le seteo el nombre de la playlist
@@ -50,12 +59,18 @@ public class PlaylistResource {
         playlistWithSongsDTO.setSongs(listSongsDTO);
         return Response.ok(playlistWithSongsDTO).build();
     }
-/*
+
+    // crear una playlist
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createPlaylist(Playlist playlist){
-        playlistService.createPlaylist(playlist);
+    public Response createPlaylist(PlaylistDTO playlistDTO){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication(); //contexto de seguridad de spring
+        String loggedEmail = (String) auth.getPrincipal();   //email del usuario loggeado
+        playlistService.create(playlistDTO,loggedEmail);
+        return Response.status(Response.Status.CREATED).build();
     }
-    */
+
+    //borrar
+    //playlistService.deleteSongOfPlaylist(playlistService.getIdByPlaylistIdAndSongId(2,1));
 
 }

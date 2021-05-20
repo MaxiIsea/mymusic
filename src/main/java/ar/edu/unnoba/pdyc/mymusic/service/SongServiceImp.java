@@ -33,8 +33,8 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
-    public void update(long id,Song song, String userEmail) throws Exception {
-        User userLogged = userRepository.findByEmail(userEmail);
+    public void update(long id,Song song, String loggedEmail) throws Exception {
+        User userLogged = userRepository.findByEmail(loggedEmail);
         Song songDB = songRepository.findById(id).get();    //el get esta por optional, la consulta devuelve el objeto o nada(o esta en la BD)
         if(songDB.getOwner().equals(userLogged)){
             songDB.setAuthor(song.getAuthor());
@@ -46,8 +46,8 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
-    public void delete(long id,String userEmail) throws Exception {
-        User userLogged = userRepository.findByEmail(userEmail);
+    public void delete(long id,String loggedEmail) throws Exception {
+        User userLogged = userRepository.findByEmail(loggedEmail);
         Song songDB = songRepository.findById(id).get();
         if(songDB.getOwner().equals(userLogged)){
             songRepository.delete(songDB);
