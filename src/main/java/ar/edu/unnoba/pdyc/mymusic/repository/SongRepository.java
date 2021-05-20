@@ -12,7 +12,11 @@ import java.util.List;
 @Repository("songRepository")
 public interface SongRepository extends JpaRepository<Song,Long>{
 
+    /*
     @Query("select s from Song s where s.author=:author and s.genre =:genre")
     public List<Song> getSongsByAuthorGenre(@Param("author") String author, @Param("genre") Genre genre);
+    */
+
+    List<Song> findByAuthorAndGenre(String author,Genre genre);
 
 }

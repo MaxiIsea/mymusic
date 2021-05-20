@@ -2,13 +2,18 @@ package ar.edu.unnoba.pdyc.mymusic.service;
 
 import ar.edu.unnoba.pdyc.mymusic.model.Genre;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
+import ar.edu.unnoba.pdyc.mymusic.model.User;
 import ar.edu.unnoba.pdyc.mymusic.repository.SongRepository;
+import ar.edu.unnoba.pdyc.mymusic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class SongServiceImp implements SongService {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private SongRepository songRepository;
@@ -19,6 +24,37 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
-    public List<Song> getSongsByAuthorGenre(String author, Genre genre) {return songRepository.getSongsByAuthorGenre(author, genre);}
+    public List<Song> getSongsByAuthorGenre(String author, Genre genre) {return songRepository.findByAuthorAndGenre(author,genre);}
+
+    @Override
+    public void create(Song song,String ownerEmail) {
+        song.setOwner(userRepository.findByEmail(ownerEmail));
+        songRepository.save(song);
+    }
+
+    @Override
+    public void update(long id,Song song, String userEmail) throws Exception {
+        User userLogged = userRepository.findByEmail(userEmail);
+        Song songDB = songRepository.findById(id).get();    //el get esta por optional, la consulta devuelve el objeto o nada(o esta en la BD)
+        if(songDB.getOwner().equals(userLogged)){
+            songDB.setAuthor(song.getAuthor());
+            songDB.setName(song.getName());
+            songRepository.save(songDB);
+        } else{
+            throw new Exception("no podes modificar una cancion de la que no sos el dueño");
+        }
+    }
+
+    @Override
+    public void delete(long id,String userEmail) throws Exception {
+        User userLogged = userRepository.findByEmail(userEmail);
+        Song songDB = songRepository.findById(id).get();
+        if(songDB.getOwner().equals(userLogged)){
+            songRepository.delete(songDB);
+        } else {
+            throw new Exception("no podes borrar una cancion de la que no sos dueño");
+        }
+    }
+
 
 }

@@ -8,4 +8,7 @@ import java.util.List;
 public interface SongService {
     public List<Song> getSongs();
     public List<Song> getSongsByAuthorGenre(String author, Genre genre);
+    public void create(Song song,String ownerEmail);
+    public void update(long id,Song song, String userEmail) throws Exception;
+    void delete(long id,String userEmail) throws Exception;
 }

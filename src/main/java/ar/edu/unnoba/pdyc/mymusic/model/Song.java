@@ -19,10 +19,24 @@ public class Song {
 
     @OneToMany(mappedBy = "song")
     private List<PlaylistsSongs> playlistsSongs;
-/*
-    @ManyToMany(mappedBy = "songs")
-    private List<Playlist> playlists;
-*/
+
+    //sacarlo despues
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User owner;
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    /*
+        @ManyToMany(mappedBy = "songs")
+        private List<Playlist> playlists;
+    */
     public Long getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package ar.edu.unnoba.pdyc.mymusic.model;
 
+import org.dom4j.tree.AbstractEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +15,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique = true)
     private String email;
@@ -72,6 +73,26 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled(){
         return true;
+    }
+
+    @Override
+    public int hashCode(){
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0 );
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        } else if (!(obj instanceof User)){ //sino no es un user
+            return false;
+        } else if (((User) obj).id.equals(this.id)){    //mismos id en BD -> mismo objeto
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
