@@ -42,6 +42,8 @@ public class SongResource {
         return Response.ok(list).build();
     }
 
+    /*************************
+    ejemplos de clase
 
     //crear una nueva cancion
     @POST
@@ -85,5 +87,5 @@ public class SongResource {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
-
+    **************************************************************/
 }

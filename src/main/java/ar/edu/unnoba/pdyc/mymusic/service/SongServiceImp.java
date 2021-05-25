@@ -26,6 +26,8 @@ public class SongServiceImp implements SongService {
     @Override
     public List<Song> getSongsByAuthorGenre(String author, Genre genre) {return songRepository.findByAuthorAndGenre(author,genre);}
 
+    /************************************************************
+    ejemplo de clase
     @Override
     public void create(Song song,String ownerEmail) {
         song.setOwner(userRepository.findByEmail(ownerEmail));
@@ -56,5 +58,6 @@ public class SongServiceImp implements SongService {
         }
     }
 
+    **************************************************************/
 
 }
