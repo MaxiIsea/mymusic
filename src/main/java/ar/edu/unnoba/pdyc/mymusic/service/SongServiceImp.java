@@ -1,13 +1,16 @@
 package ar.edu.unnoba.pdyc.mymusic.service;
 
 import ar.edu.unnoba.pdyc.mymusic.model.Genre;
+import ar.edu.unnoba.pdyc.mymusic.model.Playlist;
 import ar.edu.unnoba.pdyc.mymusic.model.Song;
 import ar.edu.unnoba.pdyc.mymusic.model.User;
 import ar.edu.unnoba.pdyc.mymusic.repository.SongRepository;
 import ar.edu.unnoba.pdyc.mymusic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class SongServiceImp implements SongService {
@@ -25,6 +28,13 @@ public class SongServiceImp implements SongService {
 
     @Override
     public List<Song> getSongsByAuthorGenre(String author, Genre genre) {return songRepository.findByAuthorAndGenre(author,genre);}
+
+    //implementacion metodo asincronico para obtener todas las canciones
+    @Override
+    @Async("taskExecutor")
+    public CompletableFuture<List<Song>> getSongsAsync() {
+        return CompletableFuture.completedFuture(songRepository.findAll());
+    }
 
     /************************************************************
     ejemplo de clase

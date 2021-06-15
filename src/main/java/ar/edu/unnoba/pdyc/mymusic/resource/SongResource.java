@@ -1,5 +1,6 @@
 package ar.edu.unnoba.pdyc.mymusic.resource;
 
+import ar.edu.unnoba.pdyc.mymusic.dto.PlaylistDTO;
 import ar.edu.unnoba.pdyc.mymusic.dto.SongDTO;
 import ar.edu.unnoba.pdyc.mymusic.dto.UpdateSongDTO;
 import ar.edu.unnoba.pdyc.mymusic.model.Genre;
@@ -13,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 
 import javax.ws.rs.*;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.lang.reflect.Type;
@@ -40,6 +43,18 @@ public class SongResource {
         Type listType = new TypeToken<List<SongDTO>>(){}.getType();
         List<SongDTO> list = modelMapper.map(songService.getSongsByAuthorGenre(author,genre),listType);
         return Response.ok(list).build();
+    }
+
+    //metodo asincronico para obtener todas las canciones
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public void getSongs(@Suspended AsyncResponse response) {
+        songService.getSongsAsync().thenAccept((list) -> {
+            ModelMapper modelMapper = new ModelMapper();
+            Type listType = new TypeToken<List<SongDTO>>(){}.getType();
+            List<SongDTO> l = modelMapper.map(list, listType);
+            response.resume(Response.ok(l).build());
+        });
     }
 
     /*************************

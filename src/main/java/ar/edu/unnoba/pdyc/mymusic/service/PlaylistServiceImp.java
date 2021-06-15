@@ -10,11 +10,13 @@ import ar.edu.unnoba.pdyc.mymusic.repository.PlaylistsSongsRepository;
 import ar.edu.unnoba.pdyc.mymusic.repository.SongRepository;
 import ar.edu.unnoba.pdyc.mymusic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PlaylistServiceImp implements PlaylistService{
@@ -34,6 +36,13 @@ public class PlaylistServiceImp implements PlaylistService{
     @Override
     public List<Playlist> getPlaylists() {
         return playlistRepository.findAll();
+    }
+
+    //implementacion metodo asincronico para obtener todas las playlists
+    @Override
+    @Async("taskExecutor")
+    public CompletableFuture<List<Playlist>> getPlaylistsAsync() {
+        return CompletableFuture.completedFuture(playlistRepository.findAll());
     }
 
     @Override
