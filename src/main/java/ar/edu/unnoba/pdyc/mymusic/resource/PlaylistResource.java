@@ -42,21 +42,21 @@ public class PlaylistResource {
     private PlaylistService playlistService;
 
     // obtener todas las playlists (sin canciones)
-    /* cambiado a metodo asincronico
-    @GET
+    //cambiado a metodo asincronico
+
+    /*@GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylist(){
         ModelMapper modelMapper = new ModelMapper();
         Type listType = new TypeToken<List<PlaylistDTO>>(){}.getType();
         List<PlaylistDTO> list = modelMapper.map(playlistService.getPlaylists(),listType);
         return Response.ok(list).build();
-    }
-    */
+    }*/
 
     //metodo asincronico para obtener todas las playlists
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public void getPlaylists(@Suspended AsyncResponse response) {
+    public void getPlaylist(@Suspended AsyncResponse response) {
         playlistService.getPlaylistsAsync().thenAccept((list) -> {
             ModelMapper modelMapper = new ModelMapper();
             Type listType = new TypeToken<List<PlaylistDTO>>(){}.getType();
